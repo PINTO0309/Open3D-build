@@ -85,6 +85,9 @@ $ docker run --gpus all -it --rm \
 ## 5. Appendix
 ### 5-1. TensorFlow (CUDA enabled) build command
 ```bash
+$ git clone -b v2.4.1 https://github.com/tensorflow/tensorflow.git
+$ cd tensorflow
+$ sudo ./configure
 $ sudo bazel build \
     --config=cuda \
     --config=noaws \
