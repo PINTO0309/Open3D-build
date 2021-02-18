@@ -83,7 +83,7 @@ $ docker run --gpus all -it --rm \
     pinto0309/open3d-build:latest bash
 ```
 ## 5. Usage - pip installer
-You can download and install the released Wheel installer.
+You can download and install the released Wheel installer. TensorFlow and PyTorch have already been optimized and built for Open3D.
 ```bash
 $ wget https://github.com/PINTO0309/Open3D-build/releases/download/v0.12.0/open3d-0.12.0+313315d9-cp36-cp36m-linux_x86_64.whl \
   && wget https://github.com/PINTO0309/Open3D-build/releases/download/v0.12.0/tensorflow-2.4.1-cp36-cp36m-linux_x86_64.whl \
