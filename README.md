@@ -82,9 +82,19 @@ $ docker run --gpus all -it --rm \
     -e LOCAL_GID=$(id -g $USER) \
     pinto0309/open3d-build:latest bash
 ```
+## 5. Usage - pip installer
+You can download and install the released Wheel installer.
+```bash
+$ wget https://github.com/PINTO0309/Open3D-build/releases/download/v0.12.0/open3d-0.12.0+313315d9-cp36-cp36m-linux_x86_64.whl \
+  && wget https://github.com/PINTO0309/Open3D-build/releases/download/v0.12.0/tensorflow-2.4.1-cp36-cp36m-linux_x86_64.whl \
+  && wget https://github.com/PINTO0309/Open3D-build/releases/download/v0.12.0/torch-1.7.0a0-cp36-cp36m-linux_x86_64.whl \
+  && wget https://github.com/PINTO0309/Open3D-build/releases/download/v0.12.0/torchaudio-0.7.0a0+a853dff-cp36-cp36m-linux_x86_64.whl \
+  && wget https://github.com/PINTO0309/Open3D-build/releases/download/v0.12.0/torchvision-0.8.0a0+2f40a48-cp36-cp36m-linux_x86_64.whl \
+  && sudo pip3 install --upgrade *.whl
+```
 
-## 5. Appendix
-### 5-1. TensorFlow (CUDA enabled) build command
+## 6. Appendix
+### 6-1. TensorFlow (CUDA enabled) build command
 ```bash
 $ git clone -b v2.4.1 https://github.com/tensorflow/tensorflow.git
 $ cd tensorflow
@@ -97,7 +107,7 @@ $ sudo bazel build \
     --config=v2 \
     //tensorflow/tools/pip_package:build_pip_package
 ```
-### 5-2. PyTorch (CUDA enabled) build command
+### 6-2. PyTorch (CUDA enabled) build command
 **https://github.com/PINTO0309/PyTorch-build**
 ```bash
 $ git clone -b v1.7.1 --recursive https://github.com/pytorch/pytorch
