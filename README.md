@@ -7,6 +7,7 @@ Provide Docker build sequences of Open3D for various environments.
 - CUDA 11.0
 - cuDNN 8.0
 - TensorFlow v2.4.1 (Build from source code. It will be downloaded automatically during docker build.)
+- PyTorch v1.7.1 (Build from source code. It will be downloaded automatically during docker build.)
 - Open3D 0.12.0
 
 ## 2. Default build parameters
@@ -27,7 +28,7 @@ Provide Docker build sequences of Open3D for various environments.
 --   Build Python Module ..................... ON
 --   - with Jupyter Notebook Support ......... ON
 --   Build TensorFlow Ops .................... ON
---   Build PyTorch Ops ....................... OFF
+--   Build PyTorch Ops ....................... ON
 --   Build Benchmarks ........................ ON
 --   Bundle Open3D-ML ........................ ON
 --   Build RPC interface ..................... ON
@@ -94,7 +95,33 @@ $ sudo bazel build \
     --config=nohdfs \
     --config=nonccl \
     --config=v2 \
-    --define=tflite_pip_with_flex=true \
-    --define=tflite_with_xnnpack=true \
     //tensorflow/tools/pip_package:build_pip_package
+```
+### 5-2. PyTorch (CUDA enabled) build command
+```bash
+$ git clone -b v1.7.1 --recursive https://github.com/pytorch/pytorch
+$ cd pytorch \
+    && sed -i -e "/^#ifndef THRUST_IGNORE_CUB_VERSION_CHECK$/i #define THRUST_IGNORE_CUB_VERSION_CHECK" \
+                 /usr/local/cuda/targets/x86_64-linux/include/thrust/system/cuda/config.h \
+    && cat /usr/local/cuda/targets/x86_64-linux/include/thrust/system/cuda/config.h \
+    && sed -i -e "/^if(DEFINED GLIBCXX_USE_CXX11_ABI)/i set(GLIBCXX_USE_CXX11_ABI 1)" \
+                 CMakeLists.txt \
+    && pip3 install -r requirements.txt \
+    && python3 setup.py build \
+    && python3 setup.py bdist_wheel \
+    && cd ..
+
+$ git clone -b v0.8.2 https://github.com/pytorch/vision.git
+$ cd vision \
+    && pip3 install /pytorch/dist/*.whl \
+    && python3 setup.py build \
+    && python3 setup.py bdist_wheel \
+    && cd ..
+
+$ git clone -b v0.7.2 https://github.com/pytorch/audio.git
+$ cd audio \
+    && apt-get install -y sox libsox-dev \
+    && python3 setup.py build \
+    && python3 setup.py bdist_wheel \
+    && cd ..
 ```

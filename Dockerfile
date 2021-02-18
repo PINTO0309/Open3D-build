@@ -7,11 +7,12 @@ RUN apt-get update && apt-get install -y \
         automake autoconf libpng-dev nano wget npm \
         curl zip unzip libtool swig zlib1g-dev pkg-config \
         git wget xz-utils python3-mock libpython3-dev \
-        libpython3-all-dev python3-pip g++ gcc make \
-        pciutils cpio gosu git liblapack-dev liblapacke-dev
+        libpython3-all-dev python3-pip g++ gcc make libopenmpi-dev \
+        pciutils cpio gosu git liblapack-dev liblapacke-dev \
+        libopenblas-dev libblas-dev
 
 # Install dependencies (2)
-#   Install TensorFlow v2.4.1 for CUDA11.0+cuDNN8.0, built from source code.
+#   Install TensorFlow v2.4.1, PyTorch v1.7.1 for CUDA11.0+cuDNN8.0, built from source code.
 #   Because GLIBCXX_USE_CXX11_ABI needs to be turned on.
 RUN pip3 install --upgrade pip \
     && pip3 install --upgrade onnx \
@@ -28,10 +29,15 @@ RUN pip3 install --upgrade pip \
     && pip3 install --upgrade six \
     && pip3 install --upgrade wheel \
     && pip3 install --upgrade moc \
-    # && pip3 install torch==1.7.1+cu110 \
-    #                 torchvision==0.8.2+cu110 \
-    #                 torchaudio===0.7.2 \
-    #                 -f https://download.pytorch.org/whl/torch_stable.html \
+    && gdown --id 1P7LLnXMxZux52-98R4PRPVrV9wbrMlle \
+    && pip3 install --force-reinstall torch-1.7.0a0-cp36-cp36m-linux_x86_64.whl \
+    && rm torch-1.7.0a0-cp36-cp36m-linux_x86_64.whl \
+    && gdown --id 1AIF2NqUGYRpuNMs_hm3F9Wdb3l0qcCT2 \
+    && pip3 install torchaudio-0.7.0a0+a853dff-cp36-cp36m-linux_x86_64.whl \
+    && rm torchaudio-0.7.0a0+a853dff-cp36-cp36m-linux_x86_64.whl \
+    && gdown --id 1LSJv4ZzHgwFcv4Y5zwwl3YospS8X9Vz5 \
+    && pip3 install torchvision-0.8.0a0+2f40a48-cp36-cp36m-linux_x86_64.whl \
+    && rm torchvision-0.8.0a0+2f40a48-cp36-cp36m-linux_x86_64.whl \
     && ldconfig
 
 # Build
@@ -46,10 +52,15 @@ RUN git clone -b ${OPEN3DVER} --recursive https://github.com/intel-isl/Open3D \
     && util/install_deps_ubuntu.sh assume-yes \
     && sed -i -e "/^#ifndef THRUST_IGNORE_CUB_VERSION_CHECK$/i #define THRUST_IGNORE_CUB_VERSION_CHECK" \
                  /usr/local/cuda/targets/x86_64-linux/include/thrust/system/cuda/config.h \
+    # https://github.com/intel-isl/Open3D/issues/2468
+    # x86_64 : #include "/usr/include/x86_64-linux-gnu/cblas-netlib.h"
+    # aarch64: #include "/usr/include/aarch64-linux-gnu/cblas-netlib.h"
+    && sed -i -e "/^#include \"open3d\/core\/linalg\/LinalgHeadersCPU.h\"/i #include \"\/usr\/include\/x86_64-linux-gnu\/cblas-netlib.h\"" \
+                 cpp/open3d/core/linalg/BlasWrapper.h \
     && cat /usr/local/cuda/targets/x86_64-linux/include/thrust/system/cuda/config.h \
     && mkdir build \
     && cd build \
-    && cmake -DCMAKE_INSTALL_PREFIX=${HOME}/open3d \
+    && cmake -DCMAKE_INSTALL_PREFIX=/open3d \
              -DPYTHON_EXECUTABLE=$(which python3) \
              -DBUILD_PYTHON_MODULE=ON \
              -DBUILD_SHARED_LIBS=ON \
@@ -73,7 +84,7 @@ RUN git clone -b ${OPEN3DVER} --recursive https://github.com/intel-isl/Open3D \
              -DUSE_SYSTEM_LIBREALSENSE=OFF \
              -DBUILD_AZURE_KINECT=ON \
              -DBUILD_TENSORFLOW_OPS=ON \
-             -DBUILD_PYTORCH_OPS=OFF \
+             -DBUILD_PYTORCH_OPS=ON \
              -DBUNDLE_OPEN3D_ML=ON \
              -DOPEN3D_ML_ROOT=../Open3D-ML \
             #  -DCMAKE_FIND_DEBUG_MODE=ON \
