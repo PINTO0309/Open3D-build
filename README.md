@@ -113,17 +113,46 @@ Provide Docker build sequences of Open3D for various environments.
 
 ## 3. Usage - Docker Build
 You can customize the Dockerfile to build and run your own container images on your own.
+### 3-1-1. x86_64 Build
 ```bash
 $ version=0.12.0
 $ git clone -b ${version} https://github.com/PINTO0309/Open3D-build.git
 $ cd Open3D-build
-$ docker build -t pinto0309/open3d-build:latest .
+$ docker build -t pinto0309/open3d-build:latest x86_64
+```
+### 3-1-2. aarch64 Build
+```bash
+$ version=0.12.0
+$ git clone -b ${version} https://github.com/PINTO0309/Open3D-build.git
+$ cd Open3D-build
+$ docker build -t pinto0309/open3d-build:l4t-r32.5.0 aarch64/jetson_nano
+```
 
+### 3-2-1. x86_64 Run
+```
 $ docker run --gpus all -it --rm \
     -v `pwd`:/workspace \
     -e LOCAL_UID=$(id -u $USER) \
     -e LOCAL_GID=$(id -g $USER) \
     pinto0309/open3d-build:latest bash
+```
+### 3-2-2. aarch64 Run
+#### 3-2-2-1. aarch64 emulation on x86_64 environment
+```
+$ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+$ docker run --gpus all -it --rm \
+    -v `pwd`:/workspace \
+    -e LOCAL_UID=$(id -u $USER) \
+    -e LOCAL_GID=$(id -g $USER) \
+    pinto0309/open3d-build:l4t-r32.5.0 bash
+```
+#### 3-2-2-2. Running on the aarch64 environment
+```
+$ docker run --gpus all -it --rm \
+    -v `pwd`:/workspace \
+    -e LOCAL_UID=$(id -u $USER) \
+    -e LOCAL_GID=$(id -g $USER) \
+    pinto0309/open3d-build:l4t-r32.5.0 bash
 ```
 
 ## 4. Usage - Docker Pull / Run
@@ -134,6 +163,15 @@ $ docker run --gpus all -it --rm \
     -e LOCAL_UID=$(id -u $USER) \
     -e LOCAL_GID=$(id -g $USER) \
     pinto0309/open3d-build:latest bash
+```
+or
+```bash
+$ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+$ docker run --gpus all -it --rm \
+    -v `pwd`:/workspace \
+    -e LOCAL_UID=$(id -u $USER) \
+    -e LOCAL_GID=$(id -g $USER) \
+    pinto0309/open3d-build:l4t-r32.5.0 bash
 ```
 ## 5. Usage - pip installer
 You can download and install the released Wheel installer. TensorFlow and PyTorch have already been optimized and built for Open3D.
