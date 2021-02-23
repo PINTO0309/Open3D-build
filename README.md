@@ -4,17 +4,15 @@ Provide Docker build sequences of Open3D for various environments.
 
 ## 1. Docker Image Environment
 - Ubuntu 18.04 x86_64
-- CUDA 11.0
-- cuDNN 8.0
-- TensorFlow v2.4.1 (Build from source code. It will be downloaded automatically during docker build.)
-- PyTorch v1.7.1 (Build from source code. It will be downloaded automatically during docker build.)
-
+    - CUDA 11.0
+    - cuDNN 8.0
+    - TensorFlow v2.4.1 (Build from source code. It will be downloaded automatically during docker build.)
+    - PyTorch v1.7.1 (Build from source code. It will be downloaded automatically during docker build.)
 - Jetson Nano L4T r32.5.0 aarch64
-- CUDA 10.2
-- cuDNN 8.0
-- TensorFlow v2.4.1 (Build from source code. It will be downloaded automatically during docker build.)
-- PyTorch v1.7.1 (Build from source code. It will be downloaded automatically during docker build.)
-
+    - CUDA 10.2
+    - cuDNN 8.0
+    - TensorFlow v2.4.1 (Build from source code. It will be downloaded automatically during docker build.)
+    - PyTorch v1.7.1 (Build from source code. It will be downloaded automatically during docker build.)
 - Open3D 0.12.0
 
 ## 2. Default build parameters
