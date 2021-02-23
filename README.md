@@ -8,9 +8,64 @@ Provide Docker build sequences of Open3D for various environments.
 - cuDNN 8.0
 - TensorFlow v2.4.1 (Build from source code. It will be downloaded automatically during docker build.)
 - PyTorch v1.7.1 (Build from source code. It will be downloaded automatically during docker build.)
+
+- Jetson Nano L4T r32.5.0 aarch64
+- CUDA 10.2
+- cuDNN 8.0
+- TensorFlow v2.4.1 (Build from source code. It will be downloaded automatically during docker build.)
+- PyTorch v1.7.1 (Build from source code. It will be downloaded automatically during docker build.)
+
 - Open3D 0.12.0
 
 ## 2. Default build parameters
+### 2-1. Ubuntu 18.04 x86_64
+```
+-- ========================================================================
+-- Open3D 0.12.0 Configuration Summary
+-- ========================================================================
+-- Enabled Features:
+--   OpenMP .................................. ON
+--   Headless Rendering ...................... OFF
+--   Azure Kinect Support .................... ON
+--   Intel RealSense Support ................. ON
+--   CUDA Support ............................ ON
+--   Build GUI ............................... ON
+--   Build Shared Library .................... ON
+--   Build Unit Tests ........................ OFF
+--   Build Examples .......................... 
+--   Build Python Module ..................... ON
+--   - with Jupyter Notebook Support ......... ON
+--   Build TensorFlow Ops .................... ON
+--   Build PyTorch Ops ....................... ON
+--   Build Benchmarks ........................ ON
+--   Bundle Open3D-ML ........................ ON
+--   Build RPC interface ..................... ON
+--   Force GLIBCXX_USE_CXX11_ABI= ............ 1
+-- ========================================================================
+-- Third-Party Dependencies:
+--   EIGEN3 .................................. yes (build from source)
+--   FAISS ................................... no
+--   FILAMENT ................................ yes (build from source)
+--   FLANN ................................... yes (build from source)
+--   FMT ..................................... yes (build from source)
+--   GLEW .................................... yes (build from source)
+--   GLFW .................................... yes (build from source)
+--   GOOGLETEST .............................. no
+--   IMGUI ................................... yes (build from source)
+--   JPEG .................................... yes (build from source)
+--   JSONCPP ................................. yes (build from source)
+--   LIBLZF .................................. yes (build from source)
+--   OPENGL .................................. yes (build from source)
+--   PNG ..................................... yes (build from source)
+--   PYBIND11 ................................ yes (build from source)
+--   QHULL ................................... yes (build from source)
+--   LIBREALSENSE ............................ yes (build from source)
+--   TINYFILEDIALOGS ......................... yes (build from source)
+--   TINYGLTF ................................ yes (build from source)
+--   TINYOBJLOADER ........................... yes (build from source)
+-- ========================================================================
+```
+### 2-2. Jetson Nano L4T r32.5.0 aarch64
 ```
 -- ========================================================================
 -- Open3D 0.12.0 Configuration Summary
